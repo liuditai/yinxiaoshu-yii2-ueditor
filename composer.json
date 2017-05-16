@@ -1,0 +1,22 @@
+{
+    "name": "yinxiaoshu/yii2-ueditor",
+    "description": "The UEditor integration for the Yii2 framework",
+    "keywords": ["yii2", "ueditor", "rich text editor"],
+    "type": "yii2-extension",
+    "license": "MIT",
+	"authors": [
+		{
+			"name": "Liu Di",
+			"email": "turbulence@live.cn"
+		}
+	],
+    "require": {
+		"imagine/imagine": "~0.5",
+        "sybio/gif-creator": "1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "yinxiaoshu\\ueditor\\": ""
+        }
+    },	
+}
