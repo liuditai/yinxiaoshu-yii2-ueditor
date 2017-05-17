@@ -18,5 +18,8 @@
         "psr-4": {
             "yinxiaoshu\\ueditor\\": ""
         }
+    },
+    "extra": {
+        "bootstrap": "yinxiaoshu\\ueditor\\MyBootstrap"
     }	
 }
