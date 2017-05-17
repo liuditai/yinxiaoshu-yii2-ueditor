@@ -11,7 +11,7 @@
 		}
 	],
     "require": {
-		"imagine/imagine": "~0.5",
+		"yiisoft/yii2-imagine": "~2.1.0",
         "sybio/gif-creator": "1.0.0",
         "sybio/gif-frame-extractor": "1.0.0"
     },
