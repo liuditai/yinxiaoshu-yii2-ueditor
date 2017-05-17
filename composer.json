@@ -12,7 +12,8 @@
 	],
     "require": {
 		"imagine/imagine": "~0.5",
-        "sybio/gif-creator": "1.0.0"
+        "sybio/gif-creator": "1.0.0",
+        "sybio/gif-frame-extractor": "1.0.0",
     },
     "autoload": {
         "psr-4": {
