@@ -4,7 +4,7 @@ namespace yinxiaoshu\ueditor\helpers;
 
 use Yii;
 
-class ListFile 
+class ListFile
 {
 	public static function doIt($descend=true)
 	{
@@ -32,11 +32,11 @@ class ListFile
 		$end = $start + $size;
 
 		/* 获取文件列表 */
-		$ueditor_image_path = "@webroot/upload";
-		if (isset(Yii::$app->params['ueditor'],Yii::$app->params['ueditor']['uploadPath'])) {
-			$ueditor_image_path = Yii::$app->params['ueditor']['uploadPath'];
+		$ueditor_upload_path = "@webroot/upload";
+		if (isset(Yii::$app->params['ueditor']['uploadPath'])) {
+			$ueditor_upload_path = Yii::$app->params['ueditor']['uploadPath'];
 		}
-		$path = Yii::getAlias($ueditor_image_path . (substr($path, 0, 1) == "/" ? "":"/") . $path);
+		$path = Yii::getAlias($ueditor_upload_path . (substr($path, 0, 1) == "/" ? "":"/") . $path);
 		$files = self::getFiles($path, $allowFiles);
 
 		if (!count($files)) {
@@ -69,25 +69,25 @@ class ListFile
 
 	protected static function getFiles($path, $allowFiles, &$files = array())
 	{
-    if (!is_dir($path)) return null;
-    if(substr($path, strlen($path) - 1) != '/') $path .= '/';
-    $handle = opendir($path);
-    while (false !== ($file = readdir($handle))) {
-        if ($file != '.' && $file != '..') {
-            $path2 = $path . $file;
-            if (is_dir($path2)) {
-                self::getFiles($path2, $allowFiles, $files);
-            } else {
-                if (preg_match("/\.(".$allowFiles.")$/i", $file)) {
-                    $files[] = array(
-                        'url'=> substr($path2, strlen($_SERVER['DOCUMENT_ROOT'])),
-                        'mtime'=> filemtime($path2)
-                    );
-                }
-            }
-        }
-    }
-    return $files;		
+	    if (!is_dir($path)) return null;
+	    if(substr($path, strlen($path) - 1) != '/') $path .= '/';
+	    $handle = opendir($path);
+	    while (false !== ($file = readdir($handle))) {
+	        if ($file != '.' && $file != '..') {
+	            $path2 = $path . $file;
+	            if (is_dir($path2)) {
+	                self::getFiles($path2, $allowFiles, $files);
+	            } else {
+	                if (preg_match("/\.(".$allowFiles.")$/i", $file)) {
+	                    $files[] = array(
+	                        'url'=> substr($path2, strlen($_SERVER['DOCUMENT_ROOT'])),
+	                        'mtime'=> filemtime($path2)
+	                    );
+	                }
+	            }
+	        }
+	    }
+	    return $files;
 	}
 
 	protected static function buildSorter($descend)
@@ -103,7 +103,7 @@ class ListFile
 				return 0;
 			} else {
 				return $descend? true : false;
-			}					
+			}
 		};
-	} 
+	}
 }

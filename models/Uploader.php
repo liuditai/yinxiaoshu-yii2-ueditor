@@ -87,7 +87,7 @@ class Uploader
             $file = $this->file = $_FILES[$this->fileField];
         } else {
             $file = $this->file = null;
-        }        
+        }
 
         if (!$file) {
             $this->stateInfo = $this->getStateInfo("ERROR_FILE_NOT_FOUND");
@@ -225,7 +225,7 @@ class Uploader
         }
 
         preg_match("/[\/]([^\/]*)[\.]?[^\.\/]*$/", $imgUrl, $m);
-        $this->oriName = $m ? $m[1] : ""; 
+        $this->oriName = $m ? $m[1] : "";
         $fileType = strrchr($this->oriName, '.');
         if ($fileType) {
             $fileType = strtolower($fileType);
@@ -234,7 +234,7 @@ class Uploader
             $contentType = $heads['Content-Type'];
             switch (strtolower($contentType)) {
                 case 'image/jpeg':
-                    $fileType = '.jpg'; 
+                    $fileType = '.jpg';
                     break;
                 case 'image/pjpeg':
                     $fileType = '.jpeg';
@@ -252,7 +252,7 @@ class Uploader
                     $fileType = '.limit';
             }
             $this->oriName .= $fileType;
-        }        
+        }
 
         //格式验证(扩展名验证和Content-Type验证)
         if (!in_array($fileType, $this->config['allowFiles']) || !isset($heads['Content-Type']) || !stristr($heads['Content-Type'], "image")) {
@@ -352,12 +352,12 @@ class Uploader
         }
 
         $ext = $this->getFileExt();
-        if (isset(Yii::$app->params['ueditor'],Yii::$app->params['ueditor']['uploadRootUrl'])) {
-            return Yii::getAlias(Yii::$app->params['ueditor']['uploadRootUrl'] . $format . $ext);
+        if (isset(Yii::$app->params['ueditor']['uploadPath'])) {        
+            return Yii::getAlias(str_replace('webroot','web',Yii::$app->params['ueditor']['uploadPath']) . $format . $ext);
         } else {
             return Yii::getAlias('@web/upload'. $format . $ext);
         }
-        
+
         //return $format . $ext;
     }
 
@@ -377,7 +377,7 @@ class Uploader
     {
         $fullname = $this->fullName;
         //$rootPath = $_SERVER['DOCUMENT_ROOT'];
- 
+
         $rootPath = Yii::getAlias('@webroot');
 
         //$rootPath = Yii::getAlias('@webroot');
