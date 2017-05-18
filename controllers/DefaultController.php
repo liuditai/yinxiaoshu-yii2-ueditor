@@ -19,6 +19,8 @@ use yinxiaoshu\ueditor\helpers\ConvertBmp;
  */
 class DefaultController extends Controller
 {
+    public $enableCsrfValidation = false;
+    
     public function beforeAction($action)
     {
         $csrf_token = Yii::$app->request->get('_csrf');
