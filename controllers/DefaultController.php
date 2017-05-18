@@ -32,25 +32,6 @@ class DefaultController extends Controller
         return false;
     }
 
-    /*
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['handler'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],                    
-                    ]
-                ],
-            ],
-        ];
-    }
-    */
-
-
     /**
      * Renders the index view for the module
      * @return string
@@ -70,12 +51,19 @@ class DefaultController extends Controller
         if (strcmp($action,'config') === 0) {
             $result = $CONFIG;
         } else {
-            if (strcmp($session->get('ueditor_auth_key','null'),$auth_key) === 0) {
+            $valid = true;
+            if (isset(Yii::$app->params['ueditor']['accessRules']['verify']) && Yii::$app->params['ueditor']['accessRules']['verify'] == true) { // 如果需要验证访问权限
+                if (isset(Yii::$app->params['ueditor']['accessRules']['permissionID']) && !is_null(Yii::$app->authManager)) { // 如果存在 permissionID 且启用 rbac
+                    $valid = Yii::$app->user->can(Yii::$app->params['ueditor']['accessRules']['permissionID']);
+                } else {
+                    $valid = !Yii::$app->user->isGuest;
+                }
+            }
+
+            if ($valid) {
                 switch ($action) {
                     case 'uploadimage':
                     case 'uploadscrawl':
-                    case 'uploadvideo':
-                    case 'uploadfile':
                         $result = Upload::doIt();
                         ConvertBmp::doIt($result);
                         if (strcmp($result['state'],'SUCCESS') == 0) {
@@ -83,8 +71,12 @@ class DefaultController extends Controller
                             $path = ResizeImage::doIt($url);
                             if ($path) {
                                 $result['size'] = filesize($path);
-                            }                  
+                            }
                         }
+                        break;
+                    case 'uploadvideo':
+                    case 'uploadfile':
+                        $result = Upload::doIt();
                         break;
                     case 'listimage':
                     case 'listfile':
@@ -101,7 +93,7 @@ class DefaultController extends Controller
                                     $path = ResizeImage::doIt($url);
                                     if ($path) {
                                         $result['list'][$i]['size'] = filesize($path);
-                                    }                           
+                                    }
                                 }
                             }
                         }
@@ -111,7 +103,7 @@ class DefaultController extends Controller
                             'state' => '请求地址出错'
                         );
                         break;
-                }                
+                }
             } else {
                 $result = array(
                     'state' => '当前用户权限不足，禁止操作'
