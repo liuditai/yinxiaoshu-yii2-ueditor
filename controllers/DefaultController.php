@@ -19,10 +19,13 @@ use yinxiaoshu\ueditor\helpers\ConvertBmp;
  */
 class DefaultController extends Controller
 {
-    public $enableCsrfValidation = false;
-    
+    public $enableCsrfValidation = false; // 默认关闭
+
     public function beforeAction($action)
     {
+        if (isset(Yii::$app->params['ueditor']['csrf']) && Yii::$app->params['ueditor']['csrf'] == true) { // 根据配置决定是否开启cref验证
+            $this->enableCsrfValidation = true;
+        }
         $csrf_token = Yii::$app->request->get('_csrf');
         if (\yii\base\Controller::beforeAction($action)) {
             if ($this->enableCsrfValidation && Yii::$app->getErrorHandler()->exception === null && !Yii::$app->getRequest()->validateCsrfToken($csrf_token)) {
