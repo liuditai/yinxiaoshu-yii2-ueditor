@@ -77,9 +77,14 @@ class ResizeImage extends Image
 		if (isset(Yii::$app->params['ueditor'],Yii::$app->params['ueditor']['imageSize'])) {
 			$fixed_box = Yii::$app->params['ueditor']['imageSize'];
 		}
+        $keepAspectRatio = false;
+
+        if (isset(Yii::$app->params['ueditor']['keepAspectRatio'])) {
+            $keepAspectRatio = Yii::$app->params['ueditor']['keepAspectRatio'];
+        }
 
 		if (in_array($type,['.jpg','.jpeg','.png'])) {
-			$fixed_image = static::resize($path,$fixed_box[0],$fixed_box[1],false);
+			$fixed_image = static::resize($path,$fixed_box[0],$fixed_box[1],$keepAspectRatio );
 			if (isset(Yii::$app->params['ueditor']['watermarkImg'])) {
 				static::addWatermark($fixed_image,Yii::$app->params['ueditor']['watermarkImg'])->save($path);
 			} else {
@@ -99,7 +104,7 @@ class ResizeImage extends Image
 				for ($i = 0; $i < count($durations); $i++) {
 					$new_image_path = Yii::getAlias('@runtime/') . $random_str . $i . '.jpg';
 					imagejpeg($frames[$i],$new_image_path);
-					$fixed_image = static::resize($new_image_path,$fixed_box[0],$fixed_box[1],false);
+					$fixed_image = static::resize($new_image_path,$fixed_box[0],$fixed_box[1],$keepAspectRatio);
 					if (isset(Yii::$app->params['ueditor']['watermarkImg'])) {
 						static::addWatermark($fixed_image,Yii::$app->params['ueditor']['watermarkImg'])->save($new_image_path);
 					} else {
