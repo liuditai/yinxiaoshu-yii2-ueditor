@@ -64,7 +64,12 @@ class ResizeImage extends Image
 		$img = static::ensureImageInterfaceInstance($image);
 		$sourceBox = $img->getSize();
 		$destinationBox = static::getBox($sourceBox, $width, $height, $keepAspectRatio);
-		return $img->resize($destinationBox);
+		if ($sourceBox->getWidth() >= $destinationBox->getWidth() && $sourceBox->getHeight() >= $destinationBox->getHeight()){
+			return $img->resize($destinationBox);
+		} else {
+			return $img;
+		}
+		
 	}
 	public static function doIt($url)
 	{
