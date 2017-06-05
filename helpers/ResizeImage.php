@@ -222,4 +222,15 @@ class ResizeImage
 			return $image;
 		}
 	}
+	
+    public static function watermark($image, $watermarkImage, array $start = [0, 0])
+    {
+        if (!isset($start[0], $start[1])) {
+            throw new InvalidParamException('$start must be an array of two elements.');
+        }
+        $img = static::ensureImageInterfaceInstance($image);
+        $watermark = static::ensureImageInterfaceInstance($watermarkImage);
+        $img->paste($watermark, new Point($start[0], $start[1]));
+        return $img;
+    }	
 }
